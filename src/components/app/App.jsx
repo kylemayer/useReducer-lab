@@ -2,25 +2,25 @@
 import React, { useReducer } from 'react';
 
 const initialValue = {
-  current: '#FF0000',
   before: [],
+  current: '#FF0000',
   after: [],
 };
 
-const recordReducer = (state, action) => {
+const recordReducer = (state, { type, payload }) => {
   const { current, before, after } = state;
 
-  switch (action.type) {
+  switch (type) {
     case 'record':
       return {
         ...state,
         before: [...before, current],
-        current: action.payload
+        current: payload,
       };
-    // const record = (val) => {
-    //   setBefore(before => [...before, current]);
-    //   setCurrent(val);
-    // };
+      // const record = (val) => {
+      //   setBefore(before => [...before, current]);
+      //   setCurrent(val);
+      // };
     case 'undo':
       return {
         after: [current, ...after],
@@ -32,14 +32,19 @@ const recordReducer = (state, action) => {
       //   setBefore(before => before.slice(0, -1));
       // };
 
-      // const redo = () => {
+    case 'redo':
+      return {
+        before: [...before, current],
+        current: after[0],
+        after: after.slice(1),
+      };
       //   setBefore(before => [...before, current]);
       //   setCurrent(after[0]);
       //   setAfter(after => after.slice(1));
       // };
 
     default:
-      return new Error(`Invalid action type: ${action.type}`);
+      return new Error(`Invalid action type: ${type}`);
   }
 };
 
@@ -67,7 +72,12 @@ function App() {
       <input
         type="color"
         value={current}
-        onChange={({ target }) => record(target.value)}
+        onChange={({ target }) => {
+          dispatch({
+            type: 'record',
+            payload: target.value,
+          });
+        }}
         aria-label="color-picker"
       />
       <div
