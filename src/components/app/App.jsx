@@ -1,33 +1,49 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 
 const useRecord = (init) => {
-  const [before, setBefore] = useState([]);
-  const [current, setCurrent] = useState(init);
-  const [after, setAfter] = useState([]);
+  const initialValue = {
+    current: init,
+  };
+
+  const recordReducer = (state, action) => {
+    switch (action.type) {
+      case 'increment':
+        return { current: state.current + action.payload };
+      case 'decrement':
+        return { current: state.current + action.payload };
+
+      default:
+        return new Error(`Invalid action type: ${action.type}`);
+    }
+  };
+
+  // const [before, setBefore] = useState([]);
+  // const [current, setCurrent] = useState(init);
+  // const [after, setAfter] = useState([]);
 
   const undo = () => {
-    setAfter(after => [current, ...after]);
-    setCurrent(before[before.length - 1]);
-    setBefore(before => before.slice(0, -1));
+    // setAfter(after => [current, ...after]);
+    // setCurrent(before[before.length - 1]);
+    // setBefore(before => before.slice(0, -1));
   };
 
   const redo = () => {
-    setBefore(before => [...before, current]);
-    setCurrent(after[0]);
-    setAfter(after => after.slice(1));
+    // setBefore(before => [...before, current]);
+    // setCurrent(after[0]);
+    // setAfter(after => after.slice(1));
   };
 
-  const record = val => {
-    setBefore(before => [...before, current]);
-    setCurrent(val);
+  const record = (val) => {
+    // setBefore(before => [...before, current]);
+    // setCurrent(val);
   };
 
   return {
     undo,
     record,
     redo,
-    current,
+    // current,
   };
 };
 
@@ -38,8 +54,15 @@ function App() {
     <>
       <button onClick={undo}>undo</button>
       <button onClick={redo}>redo</button>
-      <input type="color" value={current} onChange={({ target }) => record(target.value)} aria-label="color-picker" />
-      <div style={{ backgroundColor: current, height: '50px', width: '50px' }}></div>
+      <input
+        type="color"
+        value={current}
+        onChange={({ target }) => record(target.value)}
+        aria-label="color-picker"
+      />
+      <div
+        style={{ backgroundColor: current, height: '50px', width: '50px' }}
+      ></div>
     </>
   );
 }
