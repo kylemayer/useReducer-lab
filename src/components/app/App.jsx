@@ -15,7 +15,7 @@ const recordReducer = (state, action) => {
       return {
         ...state,
         before: [...before, current],
-        current: payloard,
+        current: action.payload
       };
     // const record = (val) => {
     //   setBefore(before => [...before, current]);
@@ -23,11 +23,14 @@ const recordReducer = (state, action) => {
     // };
     case 'undo':
       return {
-        //   setAfter(after => [current, ...after]);
-        //   setCurrent(before[before.length - 1]);
-        //   setBefore(before => before.slice(0, -1));
-        // };
+        after: [current, ...after],
+        current: before[before.length - 1],
+        before: before.slice(0, -1),
       };
+      //   setAfter(after => [current, ...after]);
+      //   setCurrent(before[before.length - 1]);
+      //   setBefore(before => before.slice(0, -1));
+      // };
 
       // const redo = () => {
       //   setBefore(before => [...before, current]);
@@ -46,15 +49,17 @@ function App() {
   return (
     <>
       <button
+        aria-label="undo"
         onClick={() => {
-          dispatch({ type: 'decrement', payload: 1 });
+          dispatch({ type: 'undo' });
         }}
       >
         undo
       </button>
       <button
+        aria-label="redo"
         onClick={() => {
-          dispatch({ type: 'increment', payload: 1 });
+          dispatch({ type: 'redo' });
         }}
       >
         redo
