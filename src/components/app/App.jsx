@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useReducer } from 'react';
 
 const initialValue = {
@@ -20,7 +19,7 @@ const recordReducer = (state, { type, payload }) => {
       // const record = (val) => {
       //   setBefore(before => [...before, current]);
       //   setCurrent(val);
-      // };
+
     case 'undo':
       return {
         after: [current, ...after],
@@ -30,7 +29,6 @@ const recordReducer = (state, { type, payload }) => {
       //   setAfter(after => [current, ...after]);
       //   setCurrent(before[before.length - 1]);
       //   setBefore(before => before.slice(0, -1));
-      // };
 
     case 'redo':
       return {
@@ -41,7 +39,6 @@ const recordReducer = (state, { type, payload }) => {
       //   setBefore(before => [...before, current]);
       //   setCurrent(after[0]);
       //   setAfter(after => after.slice(1));
-      // };
 
     default:
       return new Error(`Invalid action type: ${type}`);
@@ -50,6 +47,8 @@ const recordReducer = (state, { type, payload }) => {
 
 function App() {
   const [state, dispatch] = useReducer(recordReducer, initialValue);
+
+  const { current } = state;
 
   return (
     <>

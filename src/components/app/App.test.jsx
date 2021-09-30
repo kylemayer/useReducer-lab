@@ -9,14 +9,22 @@ describe('App component', () => {
     const app = render(<App />);
 
     const red = '#ff0000';
-    // const blue = '#0000ff';
-    // const yellow = '#ffff00';
-    // const green = '#00ff00';
+    const blue = '#0000ff';
+    const yellow = '#ffff00';
+    const green = '#00ff00';
 
     const colorPicker = app.getByLabelText('color-picker');
+    const undo = app.getByLabelText('undo');
+    const redo = app.getByLabelText('redo');
 
     fireEvent.change(colorPicker, { target: { value: red } }); //change to red
+    fireEvent.change(colorPicker, { target: { value: blue } }); //change to blue
+    fireEvent.change(colorPicker, { target: { value: green } }); //change to green
+    fireEvent.click(undo); //change to blue
+    fireEvent.click(undo); //change to red
+    fireEvent.click(redo); //change to blue
+    fireEvent.change(colorPicker, { target: { value: yellow } }); //change to yellow
 
-    expect(colorPicker.value).toBe(red);
+    expect(colorPicker.value).toBe(yellow);
   });
 });
