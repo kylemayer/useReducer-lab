@@ -1,59 +1,64 @@
 /* eslint-disable max-len */
 import React, { useReducer } from 'react';
 
-const useRecord = (init) => {
-  const initialValue = {
-    current: init,
-  };
+const initialValue = {
+  current: '#FF0000',
+  before: [],
+  after: [],
+};
 
-  const recordReducer = (state, action) => {
-    switch (action.type) {
-      case 'increment':
-        return { current: state.current + action.payload };
-      case 'decrement':
-        return { current: state.current + action.payload };
+const recordReducer = (state, action) => {
+  const { current, before, after } = state;
 
-      default:
-        return new Error(`Invalid action type: ${action.type}`);
-    }
-  };
+  switch (action.type) {
+    case 'record':
+      return {
+        ...state,
+        before: [...before, current],
+        current: payloard,
+      };
+    // const record = (val) => {
+    //   setBefore(before => [...before, current]);
+    //   setCurrent(val);
+    // };
+    case 'undo':
+      return {
+        //   setAfter(after => [current, ...after]);
+        //   setCurrent(before[before.length - 1]);
+        //   setBefore(before => before.slice(0, -1));
+        // };
+      };
 
-  // const [before, setBefore] = useState([]);
-  // const [current, setCurrent] = useState(init);
-  // const [after, setAfter] = useState([]);
+      // const redo = () => {
+      //   setBefore(before => [...before, current]);
+      //   setCurrent(after[0]);
+      //   setAfter(after => after.slice(1));
+      // };
 
-  const undo = () => {
-    // setAfter(after => [current, ...after]);
-    // setCurrent(before[before.length - 1]);
-    // setBefore(before => before.slice(0, -1));
-  };
-
-  const redo = () => {
-    // setBefore(before => [...before, current]);
-    // setCurrent(after[0]);
-    // setAfter(after => after.slice(1));
-  };
-
-  const record = (val) => {
-    // setBefore(before => [...before, current]);
-    // setCurrent(val);
-  };
-
-  return {
-    undo,
-    record,
-    redo,
-    // current,
-  };
+    default:
+      return new Error(`Invalid action type: ${action.type}`);
+  }
 };
 
 function App() {
-  const { current, undo, redo, record } = useRecord('#FF0000');
+  const [state, dispatch] = useReducer(recordReducer, initialValue);
 
   return (
     <>
-      <button onClick={undo}>undo</button>
-      <button onClick={redo}>redo</button>
+      <button
+        onClick={() => {
+          dispatch({ type: 'decrement', payload: 1 });
+        }}
+      >
+        undo
+      </button>
+      <button
+        onClick={() => {
+          dispatch({ type: 'increment', payload: 1 });
+        }}
+      >
+        redo
+      </button>
       <input
         type="color"
         value={current}
