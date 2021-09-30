@@ -38,7 +38,7 @@ function App() {
     <>
       <button onClick={undo}>undo</button>
       <button onClick={redo}>redo</button>
-      <input type="color" value={current} onChange={({ target }) => record(target.value)} />
+      <input type="color" value={current} onChange={({ target }) => record(target.value)} aria-label="color-picker" />
       <div style={{ backgroundColor: current, height: '50px', width: '50px' }}></div>
     </>
   );
