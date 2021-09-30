@@ -16,9 +16,9 @@ const recordReducer = (state, { type, payload }) => {
         before: [...before, current],
         current: payload,
       };
-      // const record = (val) => {
-      //   setBefore(before => [...before, current]);
-      //   setCurrent(val);
+    // const record = (val) => {
+    //   setBefore(before => [...before, current]);
+    //   setCurrent(val);
 
     case 'undo':
       return {
@@ -26,9 +26,9 @@ const recordReducer = (state, { type, payload }) => {
         current: before[before.length - 1],
         before: before.slice(0, -1),
       };
-      //   setAfter(after => [current, ...after]);
-      //   setCurrent(before[before.length - 1]);
-      //   setBefore(before => before.slice(0, -1));
+    //   setAfter(after => [current, ...after]);
+    //   setCurrent(before[before.length - 1]);
+    //   setBefore(before => before.slice(0, -1));
 
     case 'redo':
       return {
@@ -36,9 +36,9 @@ const recordReducer = (state, { type, payload }) => {
         current: after[0],
         after: after.slice(1),
       };
-      //   setBefore(before => [...before, current]);
-      //   setCurrent(after[0]);
-      //   setAfter(after => after.slice(1));
+    //   setBefore(before => [...before, current]);
+    //   setCurrent(after[0]);
+    //   setAfter(after => after.slice(1));
 
     default:
       return new Error(`Invalid action type: ${type}`);
@@ -50,33 +50,33 @@ function App() {
 
   const { current } = state;
 
+  const record = ({ target }) => {
+    dispatch({
+      type: 'record',
+      payload: target.value,
+    });
+  };
+
+  const undo = () => {
+    dispatch({ type: 'undo' });
+  };
+
+  const redo = () => {
+    dispatch({ type: 'redo' });
+  };
+
   return (
     <>
-      <button
-        aria-label="undo"
-        onClick={() => {
-          dispatch({ type: 'undo' });
-        }}
-      >
+      <button aria-label="undo" onClick={undo}>
         undo
       </button>
-      <button
-        aria-label="redo"
-        onClick={() => {
-          dispatch({ type: 'redo' });
-        }}
-      >
+      <button aria-label="redo" onClick={redo}>
         redo
       </button>
       <input
         type="color"
         value={current}
-        onChange={({ target }) => {
-          dispatch({
-            type: 'record',
-            payload: target.value,
-          });
-        }}
+        onChange={record}
         aria-label="color-picker"
       />
       <div
